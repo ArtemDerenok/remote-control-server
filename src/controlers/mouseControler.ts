@@ -26,6 +26,8 @@ class Mouse {
       default:
         break;
     }
+
+    return undefined;
   }
 
   private async mouseLeft(coord: string) {
