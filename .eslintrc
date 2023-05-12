@@ -12,10 +12,13 @@
   },
   "plugins": ["@typescript-eslint", "prettier"],
   "rules": {
-    "@typescript-eslint/no-empty-function": [
-      "error",
-      { "allow": ["constructors"] }
-    ],
-    "class-methods-use-this": "off"
+    "@typescript-eslint/no-empty-function": ["error", { "allow": ["constructors"] }],
+    "class-methods-use-this": "off",
+    "no-param-reassign": [
+      2,
+      {
+        "props": false
+      }
+    ]
   }
 }
