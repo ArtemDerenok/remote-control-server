@@ -1,6 +1,7 @@
 import { WebSocketServer, WebSocket } from 'ws';
 import mouseControler from './controlers/mouseControler';
 import drawControler from './controlers/drawingControler';
+import screenControler from './controlers/screenControler';
 
 declare interface MyWS extends WebSocket {
   isAlive?: boolean;
@@ -21,7 +22,7 @@ wss.on('connection', (ws: MyWS, req) => {
 
   ws.on('message', (data) => {
     const command = data.toString();
-
+    console.log(command);
     if (command.includes('mouse')) {
       if (command.includes('position')) {
         const coord = mouseControler.mouseMove(command.split('_')[1]);
@@ -39,6 +40,8 @@ wss.on('connection', (ws: MyWS, req) => {
       }
     } else if (command.includes('draw')) {
       drawControler.drawing(command.split('_')[1]);
+    } else if (command === 'prnt_scrn') {
+      screenControler.getScreen();
     }
   });
 
