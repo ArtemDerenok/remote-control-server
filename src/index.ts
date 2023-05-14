@@ -22,7 +22,6 @@ wss.on('connection', (ws: MyWS, req) => {
 
   ws.on('message', (data) => {
     const command = data.toString();
-    console.log(command);
     if (command.includes('mouse')) {
       if (command.includes('position')) {
         const coord = mouseControler.mouseMove(command.split('_')[1]);
@@ -41,7 +40,16 @@ wss.on('connection', (ws: MyWS, req) => {
     } else if (command.includes('draw')) {
       drawControler.drawing(command.split('_')[1]);
     } else if (command === 'prnt_scrn') {
-      screenControler.getScreen();
+      const screenData = screenControler.getScreen();
+      screenData.then((screen) => {
+        wss.clients.forEach((client) => {
+          if (client.readyState === WebSocket.OPEN) {
+            client.send(`prnt_scrn  ${screen}`);
+          }
+        });
+      }).catch((error) => {
+        console.log(error.message);
+      });
     }
   });
 
