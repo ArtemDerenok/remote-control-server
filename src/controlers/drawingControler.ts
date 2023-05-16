@@ -10,15 +10,15 @@ class Draw {
     switch (coordsArr[0]) {
       case 'circle': {
         await this.drawCircle(coordsArr[1]);
-        break;
+        return 'draw_circle';
       }
       case 'rectangle': {
         await this.drawRectangle(coordsArr[1], coordsArr[2]);
-        break;
+        return 'draw_rectangle';
       }
       case 'square': {
         await this.drawSquare(coordsArr[1]);
-        break;
+        return 'draw_square';
       }
       default:
         break;

@@ -1,4 +1,5 @@
 import { WebSocketServer, WebSocket } from 'ws';
+import { Point } from '@nut-tree/nut-js';
 import mouseControler from './controlers/mouseControler';
 import drawControler from './controlers/drawingControler';
 import screenControler from './controlers/screenControler';
@@ -25,7 +26,7 @@ wss.on('connection', (ws: MyWS, req) => {
     if (command.includes('mouse')) {
       if (command.includes('position')) {
         const coord = mouseControler.mouseMove(command.split('_')[1]);
-        coord.then((point) => {
+        coord.then((point: Point) => {
           wss.clients.forEach((client) => {
             if (client.readyState === WebSocket.OPEN) {
               client.send(`mouse_position ${point.x},${point.y}`);
@@ -35,10 +36,28 @@ wss.on('connection', (ws: MyWS, req) => {
           console.log(error.message);
         });
       } else {
-        mouseControler.mouseMove(command.split('_')[1]);
+        const action = mouseControler.mouseMove(command.split('_')[1]);
+        action.then((act) => {
+          wss.clients.forEach((client) => {
+            if (client.readyState === WebSocket.OPEN) {
+              client.send(`${act}`);
+            }
+          });
+        }).catch((error) => {
+          console.log(error.message);
+        });
       }
     } else if (command.includes('draw')) {
-      drawControler.drawing(command.split('_')[1]);
+      const action = drawControler.drawing(command.split('_')[1]);
+      action.then((act) => {
+        wss.clients.forEach((client) => {
+          if (client.readyState === WebSocket.OPEN) {
+            client.send(`${act}`);
+          }
+        });
+      }).catch((error) => {
+        console.log(error.message);
+      });
     } else if (command === 'prnt_scrn') {
       const screenData = screenControler.getScreen();
       screenData.then((screen) => {

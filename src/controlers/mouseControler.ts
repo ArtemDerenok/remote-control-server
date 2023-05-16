@@ -9,16 +9,16 @@ class Mouse {
     switch (coordsArr[0]) {
       case 'left':
         await this.mouseLeft(coordsArr[1]);
-        break;
+        return 'mouse_left';
       case 'right':
         await this.mouseRight(coordsArr[1]);
-        break;
+        return 'mouse_right';
       case 'up':
         await this.mouseUp(coordsArr[1]);
-        break;
+        return 'mouse_up';
       case 'down':
         await this.mouseDown(coordsArr[1]);
-        break;
+        return 'mouse_down';
       case 'position': {
         const pos = await this.setMousePosition();
         return pos;
